@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Politique de confidentialité — AmeDuPDF</title>
+  <meta name="description" content="AmeDuPDF respecte votre vie privée. Vos fichiers sont traités localement, jamais envoyés sur un serveur.">
+
+  <!-- FIX : appliquer la langue AVANT le CSS pour éviter le flash de contenu vide -->
+  <script>
+    (function() {
+      var saved = localStorage.getItem('amedupdf_policy_lang');
+      var nav   = (navigator.language || 'fr').slice(0, 2).toLowerCase();
+      var lang  = saved || (nav === 'fr' ? 'fr' : 'en');
+      document.documentElement.setAttribute('data-active-lang', lang);
+    })();
+  </script>
+
+  <style>
+    :root {
+      --blue: #2457ff;
+      --violet: #7c3aed;
+      --blue-soft: #eef3ff;
+      --dark: #0b1020;
+      --mid: #344054;
+      --muted: #7a8499;
+      --border: rgba(98,116,152,.18);
+      --bg: #f4f7ff;
+      --surface: rgba(255,255,255,.9);
+      --success: #16a34a;
+      --radius: 18px;
+      --shadow: 0 20px 60px rgba(23,42,96,.10);
+    }
+    *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: Inter,'Segoe UI',system-ui,-apple-system,sans-serif;
+      background: linear-gradient(180deg,#fbfcff 0%,var(--bg) 50%,#edf2ff 100%);
+      color: var(--dark);
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    /* ── LANG : masquer par défaut, afficher selon data-active-lang ── */
+    [data-lang="fr"], [data-lang="en"] { display: none; }
+    html[data-active-lang="fr"] [data-lang="fr"] { display: block; }
+    html[data-active-lang="en"] [data-lang="en"] { display: block; }
+    /* Inline (span, a, etc.) */
+    .lang-inline [data-lang="fr"],
+    .lang-inline [data-lang="en"] { display: none; }
+    html[data-active-lang="fr"] .lang-inline [data-lang="fr"] { display: inline; }
+    html[data-active-lang="en"] .lang-inline [data-lang="en"] { display: inline; }
+    /* Badges bilingues */
+    .badge [data-lang="fr"], .badge [data-lang="en"] { display: none; }
+    html[data-active-lang="fr"] .badge [data-lang="fr"] { display: inline; }
+    html[data-active-lang="en"] .badge [data-lang="en"] { display: inline; }
+    /* Footer spans */
+    footer [data-lang="fr"], footer [data-lang="en"] { display: none; }
+    html[data-active-lang="fr"] footer [data-lang="fr"] { display: inline; }
+    html[data-active-lang="en"] footer [data-lang="en"] { display: inline; }
+
+    /* ── HEADER ── */
+    header {
+      background: rgba(255,255,255,.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      padding: 14px 24px;
+    }
+    .header-inner {
+      max-width: 820px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .brand { display:flex; align-items:center; gap:12px; text-decoration:none; }
+    .brand-logo {
+      width: 44px; height: 44px;
+      border-radius: 13px;
+      box-shadow: 0 4px 12px rgba(36,87,255,.2);
+    }
+    .brand-text strong { display:block; font-size:1rem; letter-spacing:-.02em; color:var(--dark); }
+    .brand-text span { display:block; font-size:.75rem; color:var(--muted); }
+    .lang-btns { display:flex; gap:6px; }
+    .lang-btn {
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: transparent;
+      font-size: .8rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .15s ease;
+      color: var(--muted);
+    }
+    .lang-btn.active, .lang-btn:hover {
+      background: linear-gradient(135deg,var(--blue),var(--violet));
+      color: #fff;
+      border-color: transparent;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      max-width: 820px;
+      margin: 48px auto 0;
+      padding: 0 20px;
+      text-align: center;
+      animation: fadeUp .5s ease both;
+    }
+    .hero h1 {
+      font-size: clamp(1.9rem,5vw,3rem);
+      font-weight: 900;
+      letter-spacing: -.04em;
+      line-height: 1.1;
+    }
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg,var(--blue),var(--violet));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .trust-line {
+      margin-top: 14px;
+      font-size: 1rem;
+      color: var(--mid);
+      font-weight: 600;
+    }
+    .trust-line .highlight { color: var(--success); }
+
+    /* ── BADGES ── */
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin: 24px auto 0;
+      max-width: 820px;
+      padding: 0 20px;
+      animation: fadeUp .5s .1s ease both;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: .82rem;
+      font-weight: 800;
+      border: 1px solid rgba(22,163,74,.25);
+      background: rgba(22,163,74,.08);
+      color: #15803d;
+    }
+
+    /* ── MAIN CONTENT ── */
+    .wrap {
+      max-width: 820px;
+      margin: 36px auto 0;
+      padding: 0 20px 60px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      box-shadow: var(--shadow);
+      animation: fadeUp .5s ease both;
+    }
+    .card h2 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      color: var(--dark);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card p { color: var(--mid); font-size: .95rem; margin-bottom: 10px; }
+    .card p:last-child { margin-bottom: 0; }
+    .card ul { color: var(--mid); font-size: .95rem; padding-left: 1.4em; }
+    .card ul li { margin-bottom: 6px; }
+    code {
+      background: var(--blue-soft);
+      color: var(--blue);
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-size: .85em;
+    }
+    a { color: var(--blue); text-decoration: none; font-weight: 600; }
+    a:hover { text-decoration: underline; }
+
+    /* ── FAQ ── */
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+      padding: 14px 0;
+    }
+    .faq-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .faq-q {
+      font-weight: 800;
+      color: var(--dark);
+      font-size: .95rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      user-select: none;
+    }
+    .faq-q::after { content: "+"; font-size: 1.2rem; color: var(--blue); flex-shrink:0; transition: transform .2s; }
+    .faq-item.open .faq-q::after { transform: rotate(45deg); }
+    .faq-a {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .3s ease, padding .2s ease;
+      color: var(--mid);
+      font-size: .92rem;
+    }
+    .faq-item.open .faq-a { max-height: 200px; padding-top: 10px; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 24px 20px 36px;
+      border-top: 1px solid var(--border);
+      background: rgba(255,255,255,.5);
+      color: var(--muted);
+      font-size: .8rem;
+      line-height: 2;
+    }
+    footer strong { color: var(--mid); }
+    footer a { color: var(--muted); font-weight: 600; }
+    footer a:hover { color: var(--blue); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(16px); }
+      to   { opacity:1; transform:none; }
+    }
+    .card:nth-child(2) { animation-delay:.06s; }
+    .card:nth-child(3) { animation-delay:.12s; }
+    .card:nth-child(4) { animation-delay:.18s; }
+    .card:nth-child(5) { animation-delay:.24s; }
+    .card:nth-child(6) { animation-delay:.30s; }
+    .card:nth-child(7) { animation-delay:.36s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .card { padding: 20px 18px; }
+      .hero h1 { font-size: 1.7rem; }
+      .header-inner { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <a class="brand" href="#">
+      <img class="brand-logo" src="https://ange198.github.io/amedupdf-pages/logo.png"  alt="AmeDuPDF logo">
+      <div class="brand-text lang-inline">
+        <strong>AmeDuPDF</strong>
+        <span>
+          <span data-lang="fr">Politique de confidentialité</span>
+          <span data-lang="en">Privacy Policy</span>
+        </span>
+      </div>
+    </a>
+    <div class="lang-btns">
+      <button class="lang-btn" id="btn-fr" onclick="setLang('fr')">&#127467;&#127479; FR</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">&#127468;&#127463; EN</button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <h1>
+    <span data-lang="fr">Votre vie priv&#233;e, <em>notre priorit&#233;.</em></span>
+    <span data-lang="en">Your privacy, <em>our priority.</em></span>
+  </h1>
+  <p class="trust-line">
+    <span data-lang="fr">&#128274; <span class="highlight">Vos fichiers restent sur votre ordinateur.</span> Ils ne sont jamais envoy&#233;s sur Internet.</span>
+    <span data-lang="en">&#128274; <span class="highlight">Your files stay on your computer.</span> They are never sent over the Internet.</span>
+  </p>
+</section>
+
+<!-- BADGES -->
+<div class="badges">
+  <span class="badge">&#10004; 100% Local</span>
+  <span class="badge">&#10004; <span data-lang="fr">Aucun upload</span><span data-lang="en">No Upload</span></span>
+  <span class="badge">&#10004; <span data-lang="fr">Aucun suivi</span><span data-lang="en">No Tracking</span></span>
+  <span class="badge">&#10004; <span data-lang="fr">Gratuit</span><span data-lang="en">Free</span></span>
+</div>
+
+<!-- CONTENT -->
+<main class="wrap">
+
+  <!-- R&#233;sum&#233; -->
+  <div class="card">
+    <h2>&#128203;
+      <span data-lang="fr">R&#233;sum&#233;</span>
+      <span data-lang="en">Summary</span>
+    </h2>
+    <div data-lang="fr">
+      <p>AmeDuPDF est con&#231;u avec le respect de votre vie priv&#233;e comme priorit&#233;. Vos fichiers sont trait&#233;s localement sur votre appareil et ne sont jamais envoy&#233;s vers nos serveurs.</p>
+      <p>Cette garantie est technique&#160;: la politique de s&#233;curit&#233; de l&#8217;extension (<code>connect-src 'none'</code>) interdit physiquement toute connexion r&#233;seau sortante, m&#234;me involontaire.</p>
+    </div>
+    <div data-lang="en">
+      <p>AmeDuPDF is designed with privacy by default. Your files are processed locally on your device and are never uploaded to our servers.</p>
+      <p>This is a technical guarantee: the extension's security policy (<code>connect-src 'none'</code>) physically prevents any outbound network connection, even accidental ones.</p>
+    </div>
+  </div>
+
+  <!-- Ce que fait l&#8217;app -->
+  <div class="card">
+    <h2>&#128269;
+      <span data-lang="fr">Ce que fait AmeDuPDF avec vos fichiers</span>
+      <span data-lang="en">What AmeDuPDF does with your files</span>
+    </h2>
+    <div data-lang="fr">
+      <ul>
+        <li>Vos fichiers sont lus et trait&#233;s <strong>uniquement en m&#233;moire</strong>, dans votre navigateur.</li>
+        <li>Aucune copie n&#8217;est envoy&#233;e vers un serveur, qu&#8217;il soit le n&#244;tre ou celui d&#8217;un tiers.</li>
+        <li>Les fichiers sont trait&#233;s uniquement en m&#233;moire pendant l&#8217;utilisation de l&#8217;application. Une fois le traitement termin&#233; et l&#8217;application ferm&#233;e, AmeDuPDF ne conserve aucune copie de vos documents.</li>
+        <li>Le r&#233;sultat est g&#233;n&#233;r&#233; localement et propos&#233; en t&#233;l&#233;chargement direct sur votre appareil.</li>
+      </ul>
+    </div>
+    <div data-lang="en">
+      <ul>
+        <li>Your files are read and processed <strong>in memory only</strong>, inside your browser.</li>
+        <li>No copy is ever sent to any server &#8212; ours or anyone else's.</li>
+        <li>Files are processed only in memory while the application is in use. Once processing is complete and the application is closed, AmeDuPDF retains no copy of your documents.</li>
+        <li>The result is generated locally and offered as a direct download on your device.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Donn&#233;es stock&#233;es -->
+  <div class="card">
+    <h2>&#128190;
+      <span data-lang="fr">Donn&#233;es stock&#233;es localement</span>
+      <span data-lang="en">Data stored locally</span>
+    </h2>
+    <div data-lang="fr">
+      <p>La seule information conserv&#233;e est <strong>votre pr&#233;f&#233;rence de langue</strong> (fran&#231;ais ou anglais), enregistr&#233;e dans le stockage local de votre navigateur (<code>localStorage</code>).</p>
+      <p>Cette information reste sur votre appareil, n&#8217;est jamais transmise, et peut &#234;tre supprim&#233;e &#224; tout moment depuis les param&#232;tres de votre navigateur.</p>
+      <p>Aucun mot de passe, contenu de fichier, ni m&#233;tadonn&#233;e de vos documents n&#8217;est conserv&#233;, m&#234;me localement.</p>
+    </div>
+    <div data-lang="en">
+      <p>The only information retained is <strong>your language preference</strong> (French or English), saved in your browser's local storage (<code>localStorage</code>).</p>
+      <p>This stays on your device only, is never transmitted, and can be cleared at any time from your browser settings.</p>
+      <p>No password, file content, or document metadata is ever saved, even locally.</p>
+    </div>
+  </div>
+
+  <!-- Permissions -->
+  <div class="card">
+    <h2>&#128273;
+      <span data-lang="fr">Permissions demand&#233;es</span>
+      <span data-lang="en">Permissions requested</span>
+    </h2>
+    <div data-lang="fr">
+      <p>AmeDuPDF ne demande <strong>aucune permission sp&#233;ciale</strong> &#8212; pas d&#8217;acc&#232;s &#224; vos onglets, votre historique de navigation, ou d&#8217;autres sites web. Il s&#8217;agit d&#8217;une page autonome, fonctionnant comme une application ind&#233;pendante.</p>
+    </div>
+    <div data-lang="en">
+      <p>AmeDuPDF requests <strong>no special permissions</strong> &#8212; no access to your tabs, browsing history, or any website. It is a standalone page, functioning like an independent application.</p>
+    </div>
+  </div>
+
+  <!-- Biblioth&#232;ques tierces -->
+  <div class="card">
+    <h2>&#128230;
+      <span data-lang="fr">Biblioth&#232;ques tierces</span>
+      <span data-lang="en">Third-party libraries</span>
+    </h2>
+    <div data-lang="fr">
+      <p>AmeDuPDF utilise deux biblioth&#232;ques open source, ex&#233;cut&#233;es <strong>localement</strong> (jamais via un service externe)&#160;:</p>
+      <ul>
+        <li><strong>pdf-lib</strong> &#8212; cr&#233;ation, fusion et protection de documents PDF (licence MIT)</li>
+        <li><strong>mammoth.js</strong> &#8212; conversion de documents pris en charge vers PDF (licence BSD-2)</li>
+      </ul>
+      <p>Ces biblioth&#232;ques ne transmettent aucune donn&#233;e r&#233;seau.</p>
+    </div>
+    <div data-lang="en">
+      <p>AmeDuPDF uses two open-source libraries, executed <strong>locally</strong> (never via an external service):</p>
+      <ul>
+        <li><strong>pdf-lib</strong> &#8212; PDF creation, merging, and protection (MIT license)</li>
+        <li><strong>mammoth.js</strong> &#8212; conversion of supported documents to PDF (BSD-2 license)</li>
+      </ul>
+      <p>These libraries do not transmit any network data.</p>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="card">
+    <h2>&#10067; FAQ</h2>
+    <div data-lang="fr" class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q">Mes fichiers quittent-ils mon ordinateur&#160;?</div>
+        <div class="faq-a">Non. Tout le traitement est effectu&#233; localement dans votre navigateur. Vos fichiers ne passent jamais par un serveur.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Dois-je cr&#233;er un compte&#160;?</div>
+        <div class="faq-a">Non. AmeDuPDF ne n&#233;cessite aucune inscription ni identification.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Dois-je installer un logiciel&#160;?</div>
+        <div class="faq-a">Non. AmeDuPDF est une extension de navigateur, install&#233;e directement depuis le Chrome Web Store en un clic.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Mes documents sont-ils stock&#233;s quelque part&#160;?</div>
+        <div class="faq-a">Jamais. AmeDuPDF ne conserve aucune copie de vos fichiers. Une fois le traitement termin&#233; et l&#8217;application ferm&#233;e, tout est effac&#233; de la m&#233;moire.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Est-ce vraiment gratuit&#160;?</div>
+        <div class="faq-a">Oui, totalement. Aucun abonnement, aucune version premium cach&#233;e. Si vous souhaitez soutenir le projet, un lien de don volontaire est disponible dans l&#8217;application.</div>
+      </div>
+    </div>
+    <div data-lang="en" class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q">Do my files ever leave my computer?</div>
+        <div class="faq-a">No. All processing happens locally in your browser. Your files never go through any server.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Do I need to create an account?</div>
+        <div class="faq-a">No. AmeDuPDF requires no sign-up or login of any kind.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Do I need to install any software?</div>
+        <div class="faq-a">No. AmeDuPDF is a browser extension, installed directly from the Chrome Web Store in one click.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Are my documents stored anywhere?</div>
+        <div class="faq-a">Never. AmeDuPDF keeps no copy of your files. Once processing is done and the application is closed, everything is cleared from memory.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Is it really free?</div>
+        <div class="faq-a">Yes, completely. No subscription, no hidden premium tier. If you&#8217;d like to support the project, a voluntary donation link is available in the app.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact -->
+  <div class="card">
+    <h2>&#9993;&#65039; Contact</h2>
+    <div data-lang="fr">
+      <p>Pour toute question concernant cette politique de confidentialit&#233;&#160;:</p>
+      <p><a href="mailto:privacy@amedudev.com">privacy@amedudev.com</a></p>
+    </div>
+    <div data-lang="en">
+      <p>For any questions regarding this privacy policy:</p>
+      <p><a href="mailto:privacy@amedudev.com">privacy@amedudev.com</a></p>
+    </div>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <strong>&#169; 2026 AmeDuPDF</strong><br>
+ <span data-lang="fr">Développé par</span><span data-lang="en">Developed by</span> <a href="https://www.youtube.com/@Amedudev" target="_blank" rel="noopener">AmeDuDev</a><br>
+  Version 1.0<br>
+  <span style="font-size:.75rem;opacity:.7;">
+    <span data-lang="fr">Derni&#232;re mise &#224; jour&#160;: 06 juillet 2026</span>
+    <span data-lang="en">Last updated: July 06, 2026</span>
+  </span>
+</footer>
+
+<script>
+  function setLang(lang) {
+    document.documentElement.setAttribute('data-active-lang', lang);
+    document.getElementById('btn-fr').classList.toggle('active', lang === 'fr');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    localStorage.setItem('amedupdf_policy_lang', lang);
+  }
+
+  // Appliquer la langue au chargement (synchronise les boutons avec ce qui a ete fait dans le head)
+  var currentLang = document.documentElement.getAttribute('data-active-lang') || 'fr';
+  setLang(currentLang);
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(function(q) {
+    q.addEventListener('click', function() {
+      var item = q.closest('.faq-item');
+      var wasOpen = item.classList.contains('open');
+      q.closest('.faq-list').querySelectorAll('.faq-item').forEach(function(i) {
+        i.classList.remove('open');
+      });
+      if (!wasOpen) item.classList.add('open');
+    });
+  });
+</script>
+</body>
+</html>
