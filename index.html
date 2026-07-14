@@ -1,725 +1,1254 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>AmeduPDF - Simplifiez vos PDF</title>
-
-<meta name="description"
-content="AmeduPDF - Merge, Convert and Protect your PDF files directly in your browser.">
-
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,Helvetica,sans-serif;
-}
-
-
-body{
-
-background:#f8fbff;
-color:#1e293b;
-
-}
-
-
-header{
-
-padding:25px 8%;
-display:flex;
-justify-content:space-between;
-align-items:center;
-
-}
-
-
-
-.logo img{
-
-height:55px;
-
-}
-
-
-
-.logo-text{
-
-font-size:30px;
-font-weight:bold;
-color:#2563eb;
-
-}
-
-
-.logo-text span{
-
-color:#111827;
-
-}
-
-
-
-nav{
-
-display:flex;
-align-items:center;
-gap:25px;
-
-}
-
-
-
-nav a{
-
-text-decoration:none;
-color:#334155;
-
-}
-
-
-
-.lang-btn{
-
-
-cursor:pointer;
-border:2px solid #2563eb;
-padding:8px 18px;
-border-radius:20px;
-color:#2563eb;
-font-weight:bold;
-
-}
-
-
-
-.hero{
-
-
-padding:80px 8%;
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:50px;
-
-
-}
-
-
-
-.hero-text{
-
-max-width:600px;
-
-}
-
-
-
-h1{
-
-font-size:55px;
-line-height:1.1;
-margin-bottom:25px;
-
-}
-
-
-
-h1 span{
-
-color:#2563eb;
-
-}
-
-
-
-.hero p{
-
-font-size:20px;
-color:#64748b;
-line-height:1.6;
-margin-bottom:35px;
-
-}
-
-
-
-.btn{
-
-
-display:inline-block;
-background:#2563eb;
-color:white;
-padding:16px 32px;
-border-radius:12px;
-text-decoration:none;
-font-weight:bold;
-
-}
-
-
-
-.btn:hover{
-
-background:#1d4ed8;
-
-}
-
-
-
-.preview{
-
-
-background:white;
-padding:40px;
-border-radius:25px;
-box-shadow:0 20px 50px rgba(0,0,0,.1);
-text-align:center;
-
-}
-
-
-.preview img{
-
-width:200px;
-height:auto;
-
-}
-
-
-section{
-
-padding:70px 8%;
-
-}
-
-
-
-.title{
-
-text-align:center;
-font-size:36px;
-margin-bottom:45px;
-
-}
-
-
-
-.features{
-
-
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:30px;
-
-}
-
-
-
-.card{
-
-
-background:white;
-padding:30px;
-border-radius:20px;
-box-shadow:0 10px 30px rgba(0,0,0,.08);
-
-}
-
-
-
-.card h3{
-
-color:#2563eb;
-margin-bottom:15px;
-
-}
-
-
-
-.card p{
-
-color:#64748b;
-
-}
-
-
-
-.security{
-
-
-background:#eff6ff;
-border-radius:25px;
-text-align:center;
-
-}
-
-
-
-footer{
-
-
-background:#111827;
-color:white;
-padding:30px;
-text-align:center;
-
-}
-
-
-
-footer a{
-
-color:#93c5fd;
-
-}
-
-
-
-@media(max-width:800px){
-
-
-.hero{
-
-flex-direction:column;
-
-}
-
-
-h1{
-
-font-size:40px;
-
-}
-
-
-header{
-
-flex-direction:column;
-gap:20px;
-
-}
-
-
-}
-
-
-</style>
-
-
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>AmeDuPDF — Vos PDF, vos règles</title>
+  <meta name="description" content="Fusionnez, convertissez et protégez vos PDF directement dans votre navigateur. 100% local, gratuit, sans serveur.">
+
+  <script>
+    (function() {
+      var saved = localStorage.getItem('amedupdf_policy_lang');
+      var nav   = (navigator.language || 'fr').slice(0, 2).toLowerCase();
+      var lang  = saved || (nav === 'fr' ? 'fr' : 'en');
+      document.documentElement.setAttribute('data-active-lang', lang);
+    })();
+  </script>
+
+  <style>
+    /* ── DESIGN TOKENS (identiques à privacy/index.html) ── */
+    :root {
+      --blue: #2457ff;
+      --violet: #7c3aed;
+      --blue-2: #6d8cff;
+      --blue-soft: #eef3ff;
+      --dark: #0b1020;
+      --mid: #344054;
+      --muted: #7a8499;
+      --border: rgba(98,116,152,.18);
+      --bg: #f4f7ff;
+      --surface: rgba(255,255,255,.9);
+      --success: #16a34a;
+      --radius: 18px;
+      --radius-lg: 28px;
+      --shadow: 0 20px 60px rgba(23,42,96,.10);
+      --shadow-soft: 0 8px 24px rgba(23,42,96,.07);
+    }
+    *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; }
+    body {
+      font-family: Inter,'Segoe UI',system-ui,-apple-system,sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(36,87,255,.14), transparent 32rem),
+        radial-gradient(circle at top right, rgba(124,58,237,.10), transparent 28rem),
+        linear-gradient(180deg,#fbfcff 0%,var(--bg) 55%,#edf2ff 100%);
+      color: var(--dark);
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+    body::before {
+      content:'';
+      position:fixed; inset:0; pointer-events:none;
+      background-image: linear-gradient(rgba(36,87,255,.025) 1px,transparent 1px),
+                        linear-gradient(90deg,rgba(36,87,255,.025) 1px,transparent 1px);
+      background-size: 34px 34px;
+      mask-image: linear-gradient(to bottom,#000,transparent 60%);
+    }
+
+    /* ── LANG ── */
+    [data-lang="fr"],[data-lang="en"] { display:none; }
+    html[data-active-lang="fr"] [data-lang="fr"] { display:block; }
+    html[data-active-lang="en"] [data-lang="en"] { display:block; }
+    .li [data-lang="fr"],.li [data-lang="en"] { display:none; }
+    html[data-active-lang="fr"] .li [data-lang="fr"] { display:inline; }
+    html[data-active-lang="en"] .li [data-lang="en"] { display:inline; }
+    .badge [data-lang="fr"],.badge [data-lang="en"] { display:none; }
+    html[data-active-lang="fr"] .badge [data-lang="fr"] { display:inline; }
+    html[data-active-lang="en"] .badge [data-lang="en"] { display:inline; }
+    footer [data-lang="fr"],footer [data-lang="en"] { display:none; }
+    html[data-active-lang="fr"] footer [data-lang="fr"] { display:inline; }
+    html[data-active-lang="en"] footer [data-lang="en"] { display:inline; }
+
+    /* ── HEADER ── */
+    header {
+      background: rgba(255,255,255,.82);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      position: sticky; top:0; z-index:10;
+      padding: 14px 24px;
+    }
+    .header-inner {
+      max-width: 1000px; margin:0 auto;
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+    }
+    .brand { display:flex; align-items:center; gap:11px; text-decoration:none; }
+    .brand-logo {
+      width:42px; height:42px; border-radius:13px;
+      box-shadow:0 4px 14px rgba(36,87,255,.22);
+      object-fit:cover;
+    }
+    .brand-text strong { display:block; font-size:.98rem; letter-spacing:-.02em; color:var(--dark); }
+    .brand-text small { display:block; font-size:.72rem; color:var(--muted); }
+    .header-right { display:flex; align-items:center; gap:10px; }
+    .nav-link {
+      font-size:.84rem; font-weight:700; color:var(--muted);
+      text-decoration:none; transition:color .15s;
+    }
+    .nav-link:hover { color:var(--blue); }
+    .lang-btns { display:flex; gap:6px; }
+    .lang-btn {
+      padding:6px 13px; border-radius:999px;
+      border:1px solid var(--border); background:transparent;
+      font-size:.78rem; font-weight:800; cursor:pointer;
+      transition:all .15s ease; color:var(--muted);
+    }
+    .lang-btn.active,.lang-btn:hover {
+      background:linear-gradient(135deg,var(--blue),var(--violet));
+      color:#fff; border-color:transparent;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      max-width:1000px; margin:0 auto;
+      padding:72px 24px 56px;
+      display:grid; grid-template-columns:1fr 1fr;
+      align-items:center; gap:56px;
+    }
+    .hero-left { animation:fadeUp .55s ease both; }
+    .hero-eyebrow {
+      display:inline-flex; align-items:center; gap:7px;
+      background:var(--blue-soft);
+      border:1px solid rgba(36,87,255,.18);
+      border-radius:999px; padding:5px 14px;
+      font-size:.78rem; font-weight:800; color:var(--blue);
+      margin-bottom:20px;
+    }
+    .hero h1 {
+      font-size:clamp(2.2rem,4.5vw,3.4rem);
+      font-weight:950; letter-spacing:-.045em;
+      line-height:1.05; margin-bottom:20px;
+    }
+    .hero h1 em {
+      font-style:normal;
+      background:linear-gradient(135deg,var(--blue),var(--violet));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .hero-sub {
+      font-size:1rem; color:var(--mid);
+      line-height:1.7; margin-bottom:32px;
+    }
+    .hero-actions { display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
+    .btn-primary {
+      display:inline-flex; align-items:center; gap:8px;
+      background:linear-gradient(135deg,var(--blue),var(--violet));
+      color:#fff; padding:14px 26px; border-radius:14px;
+      font-weight:900; font-size:.95rem; text-decoration:none;
+      box-shadow:0 14px 28px rgba(36,87,255,.26);
+      transition:transform .14s ease,box-shadow .14s ease;
+    }
+    .btn-primary:hover { transform:translateY(-2px); box-shadow:0 18px 36px rgba(36,87,255,.32); }
+    .btn-secondary {
+      display:inline-flex; align-items:center; gap:7px;
+      color:var(--blue); padding:13px 22px; border-radius:14px;
+      font-weight:800; font-size:.9rem; text-decoration:none;
+      border:1px solid rgba(36,87,255,.22); background:var(--blue-soft);
+      transition:transform .14s ease;
+    }
+    .btn-secondary:hover { transform:translateY(-1px); }
+
+    /* ── HERO RIGHT : carte preview ── */
+    .hero-right { animation:fadeUp .55s .1s ease both; }
+    .preview-card {
+      background:rgba(255,255,255,.88);
+      border:1px solid var(--border);
+      border-radius:var(--radius-lg);
+      box-shadow:var(--shadow);
+      padding:32px 28px;
+      backdrop-filter:blur(10px);
+    }
+    .preview-logo {
+      width:64px; height:64px; border-radius:18px;
+      object-fit:cover;
+      box-shadow:0 8px 24px rgba(36,87,255,.24);
+      display:block; margin:0 auto 16px;
+    }
+    .preview-title {
+      text-align:center; font-size:1.25rem; font-weight:900;
+      letter-spacing:-.03em; margin-bottom:4px;
+    }
+    .preview-tagline {
+      text-align:center; font-size:.82rem; color:var(--muted);
+      margin-bottom:24px;
+    }
+    .preview-badges {
+      display:flex; flex-direction:column; gap:8px;
+    }
+    .preview-badge {
+      display:flex; align-items:center; gap:10px;
+      background:var(--blue-soft);
+      border:1px solid rgba(36,87,255,.12);
+      border-radius:12px; padding:10px 14px;
+      font-size:.84rem; font-weight:700; color:var(--mid);
+    }
+    .preview-badge .icon { font-size:1.1rem; flex-shrink:0; }
+    .preview-badge.green {
+      background:rgba(22,163,74,.07);
+      border-color:rgba(22,163,74,.18); color:#15803d;
+    }
+
+    /* ── BADGES TRUST ── */
+    .trust-row {
+      max-width:1000px; margin:0 auto;
+      padding:0 24px 48px;
+      display:flex; flex-wrap:wrap; gap:10px; justify-content:center;
+      animation:fadeUp .55s .15s ease both;
+    }
+    .badge {
+      display:inline-flex; align-items:center; gap:6px;
+      padding:8px 16px; border-radius:999px; font-size:.81rem; font-weight:800;
+      border:1px solid rgba(22,163,74,.25);
+      background:rgba(22,163,74,.08); color:#15803d;
+    }
+
+    /* ── FEATURES ── */
+    .features-section { max-width:1000px; margin:0 auto; padding:0 24px 64px; }
+    .section-eyebrow {
+      text-align:center; font-size:.8rem; font-weight:800;
+      color:var(--blue); letter-spacing:.06em; text-transform:uppercase;
+      margin-bottom:10px;
+    }
+    .section-title {
+      text-align:center;
+      font-size:clamp(1.6rem,3vw,2.2rem);
+      font-weight:900; letter-spacing:-.04em;
+      margin-bottom:36px;
+    }
+    .features-grid {
+      display:grid; grid-template-columns:repeat(3,1fr); gap:20px;
+    }
+    .feature-card {
+      background:rgba(255,255,255,.88);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:26px 22px;
+      box-shadow:var(--shadow-soft);
+      transition:transform .18s ease,box-shadow .18s ease;
+      animation:fadeUp .5s ease both;
+    }
+    .feature-card:hover { transform:translateY(-3px); box-shadow:var(--shadow); }
+    .feature-card:nth-child(2) { animation-delay:.06s; }
+    .feature-card:nth-child(3) { animation-delay:.12s; }
+    .feature-icon {
+      width:48px; height:48px; border-radius:14px;
+      background:linear-gradient(135deg,var(--blue-soft),#f0ebff);
+      display:grid; place-items:center; font-size:1.4rem;
+      margin-bottom:14px;
+    }
+    .feature-card h3 {
+      font-size:1rem; font-weight:850; letter-spacing:-.02em;
+      color:var(--dark); margin-bottom:8px;
+    }
+    .feature-card p { font-size:.88rem; color:var(--muted); line-height:1.55; }
+
+    /* ── SECURITY BANNER ── */
+    .security-banner {
+      max-width:1000px; margin:0 auto 64px;
+      padding:0 24px;
+      animation:fadeUp .5s .2s ease both;
+    }
+    .security-inner {
+      background:linear-gradient(135deg,rgba(36,87,255,.06),rgba(124,58,237,.06));
+      border:1px solid rgba(36,87,255,.15);
+      border-radius:var(--radius-lg);
+      padding:36px 40px;
+      display:flex; align-items:center; gap:32px;
+    }
+    .security-icon { font-size:2.8rem; flex-shrink:0; }
+    .security-text h2 {
+      font-size:1.2rem; font-weight:900; letter-spacing:-.03em;
+      margin-bottom:6px;
+    }
+    .security-text p { font-size:.92rem; color:var(--mid); line-height:1.6; }
+    .security-action { margin-left:auto; flex-shrink:0; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align:center;
+      padding:28px 20px 36px;
+      border-top:1px solid var(--border);
+      background:rgba(255,255,255,.5);
+      color:var(--muted); font-size:.8rem; line-height:2;
+    }
+    footer strong { color:var(--mid); }
+    footer a { color:var(--muted); font-weight:700; text-decoration:none; }
+    footer a:hover { color:var(--blue); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(18px); }
+      to   { opacity:1; transform:none; }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:720px) {
+      .hero { grid-template-columns:1fr; padding:48px 20px 40px; gap:36px; }
+      .features-grid { grid-template-columns:1fr; }
+      .security-inner { flex-direction:column; text-align:center; gap:16px; }
+      .security-action { margin-left:0; }
+      .header-inner { flex-wrap:wrap; }
+      .nav-link { display:none; }
+    }
+  </style>
 </head>
-
-
 <body>
 
-
-
+<!-- HEADER -->
 <header>
-
-
-<div class="logo">
-
-
-<!-- Remplacer par ton logo -->
-<img src="assets/amedupdf-logo.png" alt="AmeduPDF Logo">
-
-</div>
-
-<nav>
-
-
-<a href="#features" id="navFeatures">
-Features
-</a>
-
-<a href="https://amedupdf.amedudev.com/privacy/index.html" id="navPrivacy">
-Privacy
-</a>
-
-
-<button class="lang-btn" onclick="switchLanguage()">
-
-FR / EN
-
-</button>
-
-
-
-</nav>
-
-
+  <div class="header-inner">
+    <a class="brand" href="#">
+      <img class="brand-logo" src="https://amedupdf.amedudev.com/assets/amedupdf-logo.png" alt="AmeDuPDF">
+      <div class="brand-text li">
+        <strong>AmeDuPDF</strong>
+        <small>
+          <span data-lang="fr">Vos PDF, vos règles</span>
+          <span data-lang="en">Your PDFs, your rules</span>
+        </small>
+      </div>
+    </a>
+    <div class="header-right">
+      <a class="nav-link" href="#features">
+        <span class="li">
+          <span data-lang="fr">Fonctionnalités</span>
+          <span data-lang="en">Features</span>
+        </span>
+      </a>
+      <a class="nav-link" href="https://amedupdf.amedudev.com/privacy/">
+        <span class="li">
+          <span data-lang="fr">Confidentialité</span>
+          <span data-lang="en">Privacy</span>
+        </span>
+      </a>
+      <div class="lang-btns">
+        <button class="lang-btn" id="btn-fr" onclick="setLang('fr')">🇫🇷 FR</button>
+        <button class="lang-btn" id="btn-en" onclick="setLang('en')">🇬🇧 EN</button>
+      </div>
+    </div>
+  </div>
 </header>
 
-
-
-
-
+<!-- HERO -->
 <section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow li">
+      <span>✦</span>
+      <span data-lang="fr">Extension Chrome — 100% local</span>
+      <span data-lang="en">Chrome Extension — 100% local</span>
+    </div>
+    <h1>
+      <span data-lang="fr">Vos PDF,<br><em>vos règles.</em></span>
+      <span data-lang="en">Your PDFs,<br><em>your rules.</em></span>
+    </h1>
+    <p class="hero-sub">
+      <span data-lang="fr">Fusionnez, convertissez et protégez vos fichiers PDF directement dans votre navigateur. Aucun fichier n'est jamais envoyé sur un serveur.</span>
+      <span data-lang="en">Merge, convert and protect your PDF files directly in your browser. Your files are never sent to any server.</span>
+    </p>
+    <div class="hero-actions">
+      <a class="btn-primary" href="MON_LIEN_CHROME_STORE" target="_blank" rel="noopener">
+        <span>🚀</span>
+        <span class="li">
+          <span data-lang="fr">Installer sur Chrome</span>
+          <span data-lang="en">Install on Chrome</span>
+        </span>
+      </a>
+      <a class="btn-secondary" href="https://amedupdf.amedudev.com/privacy/">
+        <span>🔒</span>
+        <span class="li">
+          <span data-lang="fr">Politique de confidentialité</span>
+          <span data-lang="en">Privacy Policy</span>
+        </span>
+      </a>
+    </div>
+  </div>
 
-
-<div class="hero-text">
-
-
-<h1 id="title">
-
-Your PDF files.
-<br>
-<span>
-Simplified.
-</span>
-
-<br>
-Faster.
-
-</h1>
-
-
-
-<p id="description">
-
-AmeduPDF is a free Chrome extension that allows you to merge, convert and protect your PDF files directly from your browser.
-
-</p>
-
-
-
-
-<a class="btn"
-href="MON_LIEN_CHROME_STORE"
-target="_blank"
-id="install">
-
-🚀 Install Chrome Extension
-
-</a>
-</div>
-
-
-
-
-<div class="preview">
-
-<img src="assets/amedupdf-logo.png" alt="AmeduPDF">
-
-<h2>
-AmeduPDF
-</h2>
-
-
-<p id="privacyText">
-
-No upload.
-<br>
-Your files stay private.
-
-</p>
-
-
-</div>
-
-
+  <div class="hero-right">
+    <div class="preview-card">
+      <img class="preview-logo" src="https://amedupdf.amedudev.com/assets/amedupdf-logo.png" alt="AmeDuPDF">
+      <div class="preview-title">AmeDuPDF</div>
+      <div class="preview-tagline li">
+        <span data-lang="fr">Vos PDF, vos règles</span>
+        <span data-lang="en">Your PDFs, your rules</span>
+      </div>
+      <div class="preview-badges">
+        <div class="preview-badge">
+          <span class="icon">📄</span>
+          <span class="li">
+            <span data-lang="fr">Fusionner plusieurs PDF</span>
+            <span data-lang="en">Merge multiple PDFs</span>
+          </span>
+        </div>
+        <div class="preview-badge">
+          <span class="icon">🖼</span>
+          <span class="li">
+            <span data-lang="fr">Convertir images & .docx</span>
+            <span data-lang="en">Convert images & .docx</span>
+          </span>
+        </div>
+        <div class="preview-badge">
+          <span class="icon">🔑</span>
+          <span class="li">
+            <span data-lang="fr">Protéger par mot de passe</span>
+            <span data-lang="en">Password protect</span>
+          </span>
+        </div>
+        <div class="preview-badge green">
+          <span class="icon">✓</span>
+          <span class="li">
+            <span data-lang="fr">Aucun fichier envoyé sur Internet</span>
+            <span data-lang="en">No file sent over the Internet</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
-
-
-
-
-
-<section id="features">
-
-
-<h2 class="title" id="featuresTitle">
-
-Features
-
-</h2>
-
-
-
-
-<div class="features">
-
-
-<div class="card">
-
-<h3>
-📄 <span id="mergeTitle">
-Merge PDF
-</span>
-</h3>
-
-<p id="mergeText">
-
-Combine multiple PDF files into one document.
-
-</p>
-
-
+<!-- TRUST BADGES -->
+<div class="trust-row">
+  <span class="badge">✔ 100% Local</span>
+  <span class="badge">✔ <span data-lang="fr">Aucun upload</span><span data-lang="en">No Upload</span></span>
+  <span class="badge">✔ <span data-lang="fr">Aucun suivi</span><span data-lang="en">No Tracking</span></span>
+  <span class="badge">✔ <span data-lang="fr">Gratuit</span><span data-lang="en">Free</span></span>
+  <span class="badge">✔ <span data-lang="fr">Fonctionne hors ligne</span><span data-lang="en">Works offline</span></span>
 </div>
 
-
-
-
-<div class="card">
-
-<h3>
-🔄 <span id="convertTitle">
-Convert PDF
-</span>
-</h3>
-
-<p id="convertText">
-
-Convert images into PDF files easily.
-
-</p>
-
-
-</div>
-
-
-
-
-<div class="card">
-
-<h3>
-🔒 <span id="protectTitle">
-Protect PDF
-</span>
-</h3>
-
-<p id="protectText">
-
-Secure your documents with password protection.
-
-</p>
-
-
-</div>
-
-
-
-</div>
-
-
+<!-- FEATURES -->
+<section class="features-section" id="features">
+  <p class="section-eyebrow li">
+    <span data-lang="fr">Ce qu'il fait</span>
+    <span data-lang="en">What it does</span>
+  </p>
+  <h2 class="section-title li">
+    <span data-lang="fr">Tout ce dont vous avez besoin</span>
+    <span data-lang="en">Everything you need</span>
+  </h2>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">📄</div>
+      <h3 class="li">
+        <span data-lang="fr">Fusionner des PDF</span>
+        <span data-lang="en">Merge PDFs</span>
+      </h3>
+      <p class="li">
+        <span data-lang="fr">Combinez plusieurs fichiers PDF en un seul document, dans l'ordre de votre choix.</span>
+        <span data-lang="en">Combine multiple PDF files into one document, in the order you choose.</span>
+      </p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🖼</div>
+      <h3 class="li">
+        <span data-lang="fr">Convertir</span>
+        <span data-lang="en">Convert</span>
+      </h3>
+      <p class="li">
+        <span data-lang="fr">Transformez vos images JPG/PNG et documents Word (.docx) en PDF, avec mise en forme conservée.</span>
+        <span data-lang="en">Turn your JPG/PNG images and Word documents (.docx) into PDFs, with formatting preserved.</span>
+      </p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔑</div>
+      <h3 class="li">
+        <span data-lang="fr">Protéger</span>
+        <span data-lang="en">Protect</span>
+      </h3>
+      <p class="li">
+        <span data-lang="fr">Ajoutez un mot de passe robuste à vos PDF sensibles. Chiffrement AES standard.</span>
+        <span data-lang="en">Add a strong password to your sensitive PDFs. Standard AES encryption.</span>
+      </p>
+    </div>
+  </div>
 </section>
 
+<!-- SECURITY BANNER -->
+<div class="security-banner">
+  <div class="security-inner">
+    <span class="security-icon">🔐</span>
+    <div class="security-text">
+      <h2 class="li">
+        <span data-lang="fr">Votre confidentialité, garantie techniquement</span>
+        <span data-lang="en">Your privacy, technically guaranteed</span>
+      </h2>
+      <p class="li">
+        <span data-lang="fr">AmeDuPDF est conçu avec la confidentialité par défaut. Vos fichiers sont traités localement sur votre appareil et ne sont jamais envoyés vers nos serveurs. La politique de sécurité de l'extension (<code style="background:rgba(36,87,255,.1);color:var(--blue);padding:1px 5px;border-radius:4px;font-size:.85em">connect-src 'none'</code>) interdit physiquement toute connexion réseau sortante.</span>
+        <span data-lang="en">AmeDuPDF is designed with privacy by default. Your files are processed locally on your device and are never sent to our servers. The extension's security policy (<code style="background:rgba(36,87,255,.1);color:var(--blue);padding:1px 5px;border-radius:4px;font-size:.85em">connect-src 'none'</code>) physically blocks any outbound network connection.</span>
+      </p>
+    </div>
+    <div class="security-action">
+      <a class="btn-secondary" href="https://amedupdf.amedudev.com/privacy/">
+        <span class="li">
+          <span data-lang="fr">Lire la politique</span>
+          <span data-lang="en">Read policy</span>
+        </span>
+        →
+      </a>
+    </div>
+  </div>
+</div>
 
-
-
-
-
-
-<section class="security">
-
-
-<h2 id="securityTitle">
-
-🔐 Your privacy matters
-
-</h2>
-
-
-<p id="securityText">
-
-AmeduPDF works directly in your browser.
-<br><br>
-Your files are never uploaded to a server.
-
-</p>
-
-
-<br>
-
-
-<a href="https://amedupdf.amedudev.com/privacy/index.html" class="btn" id="privacyButton">
-
-Privacy Policy
-
-</a>
-
-
-</section>
-
-
-
-
-
-
-
+<!-- FOOTER -->
 <footer>
-
-
-<p>
-
-© 2026 AmeDuDev - AmeduPDF
-
-</p>
-
-
+  <strong>© 2026 AmeDuPDF</strong><br>
+  <span data-lang="fr">Développé par</span><span data-lang="en">Developed by</span>
+  <a href="https://amedudev.com" target="_blank" rel="noopener">AmeDuDev</a><br>
+  Version 2.0 &nbsp;·&nbsp;
+  <a href="https://amedupdf.amedudev.com/privacy/">
+    <span data-lang="fr">Politique de confidentialité</span>
+    <span data-lang="en">Privacy Policy</span>
+  </a>
+  &nbsp;·&nbsp;
+  <a href="mailto:contact@amedudev.com">contact@amedudev.com</a>
 </footer>
 
-
-
-
-
-
-
 <script>
-
-
-let english = true;
-
-
-
-function switchLanguage(){
-
-
-english = !english;
-
-
-
-if(english){
-
-
-document.documentElement.lang="en";
-
-
-document.getElementById("navFeatures").innerHTML="Features";
-
-document.getElementById("navPrivacy").innerHTML="Privacy";
-
-
-document.getElementById("title").innerHTML=
-"Your PDF files.<br><span>Simplified.</span><br>Faster.";
-
-
-document.getElementById("description").innerHTML=
-"AmeduPDF is a free Chrome extension that allows you to merge, convert and protect your PDF files directly from your browser.";
-
-
-document.getElementById("install").innerHTML=
-"🚀 Install Chrome Extension";
-
-
-document.getElementById("featuresTitle").innerHTML="Features";
-
-
-document.getElementById("mergeTitle").innerHTML="Merge PDF";
-
-document.getElementById("mergeText").innerHTML=
-"Combine multiple PDF files into one document.";
-
-
-document.getElementById("convertTitle").innerHTML="Convert PDF";
-
-document.getElementById("convertText").innerHTML=
-"Convert images into PDF files easily.";
-
-
-document.getElementById("protectTitle").innerHTML="Protect PDF";
-
-document.getElementById("protectText").innerHTML=
-"Secure your documents with password protection.";
-
-
-document.getElementById("securityTitle").innerHTML=
-"🔐 Your privacy matters";
-
-
-document.getElementById("securityText").innerHTML=
-"AmeduPDF works directly in your browser.<br><br>Your files are never uploaded to a server.";
-
-
-document.getElementById("privacyButton").innerHTML=
-"Privacy Policy";
-
-document.getElementById("privacyText").innerHTML=
-"No upload.<br>Your files stay private.";
-
-}
-
-else{
-
-
-document.documentElement.lang="fr";
-
-
-document.getElementById("navFeatures").innerHTML="Fonctionnalités";
-
-document.getElementById("navPrivacy").innerHTML="Confidentialité";
-
-
-document.getElementById("title").innerHTML=
-"Vos fichiers PDF.<br><span>Plus simples.</span><br>Plus rapides.";
-
-
-document.getElementById("description").innerHTML=
-"AmeduPDF est une extension Chrome gratuite permettant de fusionner, convertir et protéger vos fichiers PDF directement dans votre navigateur.";
-
-
-document.getElementById("install").innerHTML=
-"🚀 Installer l'extension Chrome";
-
-
-document.getElementById("featuresTitle").innerHTML=
-"Fonctionnalités";
-
-
-document.getElementById("mergeTitle").innerHTML=
-"Fusionner PDF";
-
-
-document.getElementById("mergeText").innerHTML=
-"Combinez plusieurs fichiers PDF en un seul document.";
-
-
-document.getElementById("convertTitle").innerHTML=
-"Convertir PDF";
-
-
-document.getElementById("convertText").innerHTML=
-"Transformez vos images en fichiers PDF facilement.";
-
-
-document.getElementById("protectTitle").innerHTML=
-"Protéger PDF";
-
-
-document.getElementById("protectText").innerHTML=
-"Sécurisez vos documents avec un mot de passe.";
-
-
-document.getElementById("securityTitle").innerHTML=
-"🔐 Votre confidentialité est importante";
-
-
-document.getElementById("securityText").innerHTML=
-"AmeduPDF fonctionne directement dans votre navigateur.<br><br>Vos fichiers ne sont jamais envoyés vers un serveur.";
-
-
-document.getElementById("privacyButton").innerHTML=
-"Politique de confidentialité";
-
-document.getElementById("privacyText").innerHTML=
-"Aucun téléchargement.<br>Vos fichiers restent privés.";
-
-}
-
-
-}
-
-
+  function setLang(lang) {
+    document.documentElement.setAttribute('data-active-lang', lang);
+    document.getElementById('btn-fr').classList.toggle('active', lang === 'fr');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    localStorage.setItem('amedupdf_policy_lang', lang);
+  }
+  var currentLang = document.documentElement.getAttribute('data-active-lang') || 'fr';
+  setLang(currentLang);
 </script>
-
-
-
 </body>
-
 </html>
+
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="fr">-->
+
+<!--<head>-->
+
+<!--<meta charset="UTF-8">-->
+<!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+
+<!--<title>AmeduPDF - Simplifiez vos PDF</title>-->
+
+<!--<meta name="description"-->
+<!--content="AmeduPDF - Merge, Convert and Protect your PDF files directly in your browser.">-->
+
+
+<!--<style>-->
+
+<!--*{-->
+<!--margin:0;-->
+<!--padding:0;-->
+<!--box-sizing:border-box;-->
+<!--font-family:Arial,Helvetica,sans-serif;-->
+<!--}-->
+
+
+<!--body{-->
+
+<!--background:#f8fbff;-->
+<!--color:#1e293b;-->
+
+<!--}-->
+
+
+<!--header{-->
+
+<!--padding:25px 8%;-->
+<!--display:flex;-->
+<!--justify-content:space-between;-->
+<!--align-items:center;-->
+
+<!--}-->
+
+
+
+<!--.logo img{-->
+
+<!--height:55px;-->
+
+<!--}-->
+
+
+
+<!--.logo-text{-->
+
+<!--font-size:30px;-->
+<!--font-weight:bold;-->
+<!--color:#2563eb;-->
+
+<!--}-->
+
+
+<!--.logo-text span{-->
+
+<!--color:#111827;-->
+
+<!--}-->
+
+
+
+<!--nav{-->
+
+<!--display:flex;-->
+<!--align-items:center;-->
+<!--gap:25px;-->
+
+<!--}-->
+
+
+
+<!--nav a{-->
+
+<!--text-decoration:none;-->
+<!--color:#334155;-->
+
+<!--}-->
+
+
+
+<!--.lang-btn{-->
+
+
+<!--cursor:pointer;-->
+<!--border:2px solid #2563eb;-->
+<!--padding:8px 18px;-->
+<!--border-radius:20px;-->
+<!--color:#2563eb;-->
+<!--font-weight:bold;-->
+
+<!--}-->
+
+
+
+<!--.hero{-->
+
+
+<!--padding:80px 8%;-->
+<!--display:flex;-->
+<!--justify-content:space-between;-->
+<!--align-items:center;-->
+<!--gap:50px;-->
+
+
+<!--}-->
+
+
+
+<!--.hero-text{-->
+
+<!--max-width:600px;-->
+
+<!--}-->
+
+
+
+<!--h1{-->
+
+<!--font-size:55px;-->
+<!--line-height:1.1;-->
+<!--margin-bottom:25px;-->
+
+<!--}-->
+
+
+
+<!--h1 span{-->
+
+<!--color:#2563eb;-->
+
+<!--}-->
+
+
+
+<!--.hero p{-->
+
+<!--font-size:20px;-->
+<!--color:#64748b;-->
+<!--line-height:1.6;-->
+<!--margin-bottom:35px;-->
+
+<!--}-->
+
+
+
+<!--.btn{-->
+
+
+<!--display:inline-block;-->
+<!--background:#2563eb;-->
+<!--color:white;-->
+<!--padding:16px 32px;-->
+<!--border-radius:12px;-->
+<!--text-decoration:none;-->
+<!--font-weight:bold;-->
+
+<!--}-->
+
+
+
+<!--.btn:hover{-->
+
+<!--background:#1d4ed8;-->
+
+<!--}-->
+
+
+
+<!--.preview{-->
+
+
+<!--background:white;-->
+<!--padding:40px;-->
+<!--border-radius:25px;-->
+<!--box-shadow:0 20px 50px rgba(0,0,0,.1);-->
+<!--text-align:center;-->
+
+<!--}-->
+
+
+<!--.preview img{-->
+
+<!--width:200px;-->
+<!--height:auto;-->
+
+<!--}-->
+
+
+<!--section{-->
+
+<!--padding:70px 8%;-->
+
+<!--}-->
+
+
+
+<!--.title{-->
+
+<!--text-align:center;-->
+<!--font-size:36px;-->
+<!--margin-bottom:45px;-->
+
+<!--}-->
+
+
+
+<!--.features{-->
+
+
+<!--display:grid;-->
+<!--grid-template-columns:repeat(auto-fit,minmax(250px,1fr));-->
+<!--gap:30px;-->
+
+<!--}-->
+
+
+
+<!--.card{-->
+
+
+<!--background:white;-->
+<!--padding:30px;-->
+<!--border-radius:20px;-->
+<!--box-shadow:0 10px 30px rgba(0,0,0,.08);-->
+
+<!--}-->
+
+
+
+<!--.card h3{-->
+
+<!--color:#2563eb;-->
+<!--margin-bottom:15px;-->
+
+<!--}-->
+
+
+
+<!--.card p{-->
+
+<!--color:#64748b;-->
+
+<!--}-->
+
+
+
+<!--.security{-->
+
+
+<!--background:#eff6ff;-->
+<!--border-radius:25px;-->
+<!--text-align:center;-->
+
+<!--}-->
+
+
+
+<!--footer{-->
+
+
+<!--background:#111827;-->
+<!--color:white;-->
+<!--padding:30px;-->
+<!--text-align:center;-->
+
+<!--}-->
+
+
+
+<!--footer a{-->
+
+<!--color:#93c5fd;-->
+
+<!--}-->
+
+
+
+<!--@media(max-width:800px){-->
+
+
+<!--.hero{-->
+
+<!--flex-direction:column;-->
+
+<!--}-->
+
+
+<!--h1{-->
+
+<!--font-size:40px;-->
+
+<!--}-->
+
+
+<!--header{-->
+
+<!--flex-direction:column;-->
+<!--gap:20px;-->
+
+<!--}-->
+
+
+<!--}-->
+
+
+<!--</style>-->
+
+
+<!--</head>-->
+
+
+<!--<body>-->
+
+
+
+<!--<header>-->
+
+
+<!--<div class="logo">-->
+
+
+<!--&lt;!&ndash; Remplacer par ton logo &ndash;&gt;-->
+<!--<img src="assets/amedupdf-logo.png" alt="AmeduPDF Logo">-->
+
+<!--</div>-->
+
+<!--<nav>-->
+
+
+<!--<a href="#features" id="navFeatures">-->
+<!--Features-->
+<!--</a>-->
+
+<!--<a href="https://amedupdf.amedudev.com/privacy/index.html" id="navPrivacy">-->
+<!--Privacy-->
+<!--</a>-->
+
+
+<!--<button class="lang-btn" onclick="switchLanguage()">-->
+
+<!--FR / EN-->
+
+<!--</button>-->
+
+
+
+<!--</nav>-->
+
+
+<!--</header>-->
+
+
+
+
+
+<!--<section class="hero">-->
+
+
+<!--<div class="hero-text">-->
+
+
+<!--<h1 id="title">-->
+
+<!--Your PDF files.-->
+<!--<br>-->
+<!--<span>-->
+<!--Simplified.-->
+<!--</span>-->
+
+<!--<br>-->
+<!--Faster.-->
+
+<!--</h1>-->
+
+
+
+<!--<p id="description">-->
+
+<!--AmeduPDF is a free Chrome extension that allows you to merge, convert and protect your PDF files directly from your browser.-->
+
+<!--</p>-->
+
+
+
+
+<!--<a class="btn"-->
+<!--href="MON_LIEN_CHROME_STORE"-->
+<!--target="_blank"-->
+<!--id="install">-->
+
+<!--🚀 Install Chrome Extension-->
+
+<!--</a>-->
+<!--</div>-->
+
+
+
+
+<!--<div class="preview">-->
+
+<!--<img src="assets/amedupdf-logo.png" alt="AmeduPDF">-->
+
+<!--<h2>-->
+<!--AmeduPDF-->
+<!--</h2>-->
+
+
+<!--<p id="privacyText">-->
+
+<!--No upload.-->
+<!--<br>-->
+<!--Your files stay private.-->
+
+<!--</p>-->
+
+
+<!--</div>-->
+
+
+<!--</section>-->
+
+
+
+
+
+
+<!--<section id="features">-->
+
+
+<!--<h2 class="title" id="featuresTitle">-->
+
+<!--Features-->
+
+<!--</h2>-->
+
+
+
+
+<!--<div class="features">-->
+
+
+<!--<div class="card">-->
+
+<!--<h3>-->
+<!--📄 <span id="mergeTitle">-->
+<!--Merge PDF-->
+<!--</span>-->
+<!--</h3>-->
+
+<!--<p id="mergeText">-->
+
+<!--Combine multiple PDF files into one document.-->
+
+<!--</p>-->
+
+
+<!--</div>-->
+
+
+
+
+<!--<div class="card">-->
+
+<!--<h3>-->
+<!--🔄 <span id="convertTitle">-->
+<!--Convert PDF-->
+<!--</span>-->
+<!--</h3>-->
+
+<!--<p id="convertText">-->
+
+<!--Convert images into PDF files easily.-->
+
+<!--</p>-->
+
+
+<!--</div>-->
+
+
+
+
+<!--<div class="card">-->
+
+<!--<h3>-->
+<!--🔒 <span id="protectTitle">-->
+<!--Protect PDF-->
+<!--</span>-->
+<!--</h3>-->
+
+<!--<p id="protectText">-->
+
+<!--Secure your documents with password protection.-->
+
+<!--</p>-->
+
+
+<!--</div>-->
+
+
+
+<!--</div>-->
+
+
+<!--</section>-->
+
+
+
+
+
+
+
+<!--<section class="security">-->
+
+
+<!--<h2 id="securityTitle">-->
+
+<!--🔐 Your privacy matters-->
+
+<!--</h2>-->
+
+
+<!--<p id="securityText">-->
+
+<!--AmeduPDF works directly in your browser.-->
+<!--<br><br>-->
+<!--Your files are never uploaded to a server.-->
+
+<!--</p>-->
+
+
+<!--<br>-->
+
+
+<!--<a href="https://amedupdf.amedudev.com/privacy/index.html" class="btn" id="privacyButton">-->
+
+<!--Privacy Policy-->
+
+<!--</a>-->
+
+
+<!--</section>-->
+
+
+
+
+
+
+
+<!--<footer>-->
+
+
+<!--<p>-->
+
+<!--© 2026 AmeDuDev - AmeduPDF-->
+
+<!--</p>-->
+
+
+<!--</footer>-->
+
+
+
+
+
+
+
+<!--<script>-->
+
+
+<!--let english = true;-->
+
+
+
+<!--function switchLanguage(){-->
+
+
+<!--english = !english;-->
+
+
+
+<!--if(english){-->
+
+
+<!--document.documentElement.lang="en";-->
+
+
+<!--document.getElementById("navFeatures").innerHTML="Features";-->
+
+<!--document.getElementById("navPrivacy").innerHTML="Privacy";-->
+
+
+<!--document.getElementById("title").innerHTML=-->
+<!--"Your PDF files.<br><span>Simplified.</span><br>Faster.";-->
+
+
+<!--document.getElementById("description").innerHTML=-->
+<!--"AmeduPDF is a free Chrome extension that allows you to merge, convert and protect your PDF files directly from your browser.";-->
+
+
+<!--document.getElementById("install").innerHTML=-->
+<!--"🚀 Install Chrome Extension";-->
+
+
+<!--document.getElementById("featuresTitle").innerHTML="Features";-->
+
+
+<!--document.getElementById("mergeTitle").innerHTML="Merge PDF";-->
+
+<!--document.getElementById("mergeText").innerHTML=-->
+<!--"Combine multiple PDF files into one document.";-->
+
+
+<!--document.getElementById("convertTitle").innerHTML="Convert PDF";-->
+
+<!--document.getElementById("convertText").innerHTML=-->
+<!--"Convert images into PDF files easily.";-->
+
+
+<!--document.getElementById("protectTitle").innerHTML="Protect PDF";-->
+
+<!--document.getElementById("protectText").innerHTML=-->
+<!--"Secure your documents with password protection.";-->
+
+
+<!--document.getElementById("securityTitle").innerHTML=-->
+<!--"🔐 Your privacy matters";-->
+
+
+<!--document.getElementById("securityText").innerHTML=-->
+<!--"AmeduPDF works directly in your browser.<br><br>Your files are never uploaded to a server.";-->
+
+
+<!--document.getElementById("privacyButton").innerHTML=-->
+<!--"Privacy Policy";-->
+
+<!--document.getElementById("privacyText").innerHTML=-->
+<!--"No upload.<br>Your files stay private.";-->
+
+<!--}-->
+
+<!--else{-->
+
+
+<!--document.documentElement.lang="fr";-->
+
+
+<!--document.getElementById("navFeatures").innerHTML="Fonctionnalités";-->
+
+<!--document.getElementById("navPrivacy").innerHTML="Confidentialité";-->
+
+
+<!--document.getElementById("title").innerHTML=-->
+<!--"Vos fichiers PDF.<br><span>Plus simples.</span><br>Plus rapides.";-->
+
+
+<!--document.getElementById("description").innerHTML=-->
+<!--"AmeduPDF est une extension Chrome gratuite permettant de fusionner, convertir et protéger vos fichiers PDF directement dans votre navigateur.";-->
+
+
+<!--document.getElementById("install").innerHTML=-->
+<!--"🚀 Installer l'extension Chrome";-->
+
+
+<!--document.getElementById("featuresTitle").innerHTML=-->
+<!--"Fonctionnalités";-->
+
+
+<!--document.getElementById("mergeTitle").innerHTML=-->
+<!--"Fusionner PDF";-->
+
+
+<!--document.getElementById("mergeText").innerHTML=-->
+<!--"Combinez plusieurs fichiers PDF en un seul document.";-->
+
+
+<!--document.getElementById("convertTitle").innerHTML=-->
+<!--"Convertir PDF";-->
+
+
+<!--document.getElementById("convertText").innerHTML=-->
+<!--"Transformez vos images en fichiers PDF facilement.";-->
+
+
+<!--document.getElementById("protectTitle").innerHTML=-->
+<!--"Protéger PDF";-->
+
+
+<!--document.getElementById("protectText").innerHTML=-->
+<!--"Sécurisez vos documents avec un mot de passe.";-->
+
+
+<!--document.getElementById("securityTitle").innerHTML=-->
+<!--"🔐 Votre confidentialité est importante";-->
+
+
+<!--document.getElementById("securityText").innerHTML=-->
+<!--"AmeduPDF fonctionne directement dans votre navigateur.<br><br>Vos fichiers ne sont jamais envoyés vers un serveur.";-->
+
+
+<!--document.getElementById("privacyButton").innerHTML=-->
+<!--"Politique de confidentialité";-->
+
+<!--document.getElementById("privacyText").innerHTML=-->
+<!--"Aucun téléchargement.<br>Vos fichiers restent privés.";-->
+
+<!--}-->
+
+
+<!--}-->
+
+
+<!--</script>-->
+
+
+
+<!--</body>-->
+
+<!--</html>-->
+
+
+
